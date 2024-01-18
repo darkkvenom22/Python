@@ -1,0 +1,125 @@
+1. Write a program to get 3 names as input and print those names to stdout in reverse sort
+
+def main() :
+    names = get_names()
+    display_output(names)
+
+def get_names() :
+    names = []
+
+    for _ in range(3) :
+        names.append(input("What is your name? "))
+
+    return names
+
+def display_output(n) :
+    for i in sorted(n, reverse = True) :
+        print(i)
+
+if __name__ == "__main__" :
+    main()
+
+
+2. Write a program to get 3 names as input and write those names to a file
+
+def main() :
+    names = get_names()
+    write_output(names)
+
+def get_names() :
+    names = []
+
+    for _ in range(3) :
+        names.append(input("What is your name? "))
+
+    return names
+
+def write_output(n) :
+    for i in sorted(n, reverse = True) :
+        file = open("names_1701.txt", "a")
+        file.write(f"{i}\n")
+        file.close()
+    
+
+if __name__ == "__main__" :
+    main()
+
+3. Write a program to read a file and to print the output
+
+# with - with <function> as <variable to which return value will be assigned>
+# readlines - reads a file and stores all the lines into a list
+# rstrip - strips the newline or any other characters 
+# sorted - on the filehandle as well as on the list
+# list.append(<data_to_append>) - append data to the list
+
+def main() :
+    global filename
+    filename = "names_1701.txt"
+    read_and_print_file_I() 
+    read_and_print_file_II()
+
+def read_and_print_file_I() :
+    with open(filename, "r") as file :
+        lines = file.readlines()
+
+    for line in sorted(lines) :
+        print(f"Hello, {line.rstrip()}")
+
+def read_and_print_file_II() :
+    with open(filename) as file :
+        for line in sorted(file) :
+            print("Hi,", line.strip())
+
+if __name__ == "__main__" :
+    main()
+
+
+4. # Write a program to read a csv file, read set of data, push the data to dict and then use the dict to print the data
+
+# input csv file - Hermoine, Griffyndor
+# dict values - { "name" : "Hermoine", "house" : "Griffyndor" }
+# Printing output - Hermoine is in house Griffyndor
+
+csv_file = "names.csv"
+
+def main() :
+    students = read_csv(csv_file)
+    print_output(students)
+    print_output_using_lambda(students)
+
+def read_csv(csv_file) :
+    students = []
+
+    with open(csv_file) as file :
+        for line in file :
+            name, house = line.split(",")
+            student = {"name" : name.strip(), "house" : house.strip()}
+            students.append(student)
+            #students.append({"name" : name.strip(), "house" : house.strip()})
+    
+    print(students)
+    return students
+
+
+# Sort on list of dict
+# sorted(<list of dict>, key=<funct that returns the values of all the keys>, reverse=<True or False>)
+
+# Write a fun to get the values of the keys
+def get_value(student) :
+    return student["house"]
+
+
+def print_output(n) :
+    for i in sorted(n, key=get_value, reverse = True) : # get the values of all the keys for each dict in the list
+        print(f'{i["name"]} is in {i["house"]}')
+
+
+# Using lambda functions
+
+def print_output_using_lambda(n) :
+    for i in sorted(n, key=lambda student: student["name"], reverse = True) :
+        print(f"{i['name']} runs in {i['house']}")
+
+
+if __name__ == "__main__" :
+    main()
